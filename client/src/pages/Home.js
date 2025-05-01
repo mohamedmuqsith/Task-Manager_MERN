@@ -5,13 +5,13 @@ const Home = () => {
   const { currentUser } = useAuth();
 
   return (
-    <div className="text-center py-12">
-      <h1 className="text-4xl font-bold mb-6">Welcome to Task Manager</h1>
-      <p className="text-xl mb-8">Organize your tasks efficiently and boost your productivity</p>
+    <div className="py-12 text-center">
+      <h1 className="mb-6 text-4xl font-bold">Welcome to Task Manager</h1>
+      <p className="mb-8 text-xl">Organize your tasks efficiently and boost your productivity</p>
       {currentUser ? (
         <Link 
           to="/dashboard" 
-          className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition"
+          className="px-6 py-3 text-white transition bg-blue-600 rounded-lg hover:bg-blue-700"
         >
           Go to Dashboard
         </Link>
@@ -19,13 +19,13 @@ const Home = () => {
         <div className="space-x-4">
           <Link 
             to="/login" 
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition"
+            className="px-6 py-3 text-white transition bg-blue-600 rounded-lg hover:bg-blue-700"
           >
             Login
           </Link>
           <Link 
             to="/register" 
-            className="bg-gray-200 text-gray-800 px-6 py-3 rounded-lg hover:bg-gray-300 transition"
+            className="px-6 py-3 text-gray-800 transition bg-gray-200 rounded-lg hover:bg-gray-300"
           >
             Register
           </Link>

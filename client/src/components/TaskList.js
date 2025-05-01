@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { CheckIcon, PencilIcon, TrashIcon, MapPinIcon as PinSolidIcon } from '@heroicons/react/24/solid';
 import { MapPinIcon as PinOutlineIcon } from '@heroicons/react/24/outline';
 
-const TaskItem = ({ task, onUpdate, onDelete }) => {
+const TaskItem = ({ task, onUpdate, onDelete, sortBy }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(task.title);
   const [editedDescription, setEditedDescription] = useState(task.description);
@@ -35,6 +35,20 @@ const TaskItem = ({ task, onUpdate, onDelete }) => {
     });
   };
 
+  // Determine what to display in the highlighted area based on sort selection
+  let statusDisplay;
+  
+  if (sortBy === 'date') {
+    // Format date as MM/DD/YYYY, HH:MM AM/PM
+    statusDisplay = new Date(task.date).toLocaleString();
+  } else if (sortBy === 'title') {
+    // Just display the title 
+    statusDisplay = task.title;
+  } else if (sortBy === 'status') {
+    // Display "Progress" when sorting by status
+    statusDisplay = task.status ? "Completed" : "In Progress";
+  }
+
   return (
     <div className={`p-4 mb-4 border rounded-lg ${task.pinned ? 'border-yellow-400 bg-yellow-50' : 'border-gray-200'} ${task.status ? 'bg-green-50' : ''}`}>
       {isEditing ? (
@@ -53,20 +67,20 @@ const TaskItem = ({ task, onUpdate, onDelete }) => {
           />
           <button
             onClick={handleUpdate}
-            className="mr-2 bg-blue-500 text-white px-3 py-1 rounded"
+            className="px-3 py-1 mr-2 text-white bg-blue-500 rounded"
           >
             Save
           </button>
           <button
             onClick={() => setIsEditing(false)}
-            className="bg-gray-300 px-3 py-1 rounded"
+            className="px-3 py-1 bg-gray-300 rounded"
           >
             Cancel
           </button>
         </div>
       ) : (
         <div>
-          <div className="flex justify-between items-start">
+          <div className="flex items-start justify-between">
             <div>
               <h3 className={`font-medium ${task.status ? 'line-through text-gray-500' : ''}`}>
                 {task.title}
@@ -77,33 +91,36 @@ const TaskItem = ({ task, onUpdate, onDelete }) => {
                 </p>
               )}
             </div>
-            <div className="flex space-x-2">
-              <button onClick={togglePin} className="text-yellow-500 hover:text-yellow-600">
-                {task.pinned ? (
-                  <PinSolidIcon className="h-5 w-5" />
-                ) : (
-                  <PinOutlineIcon className="h-5 w-5" />
-                )}
-              </button>
-              <button onClick={toggleStatus} className="text-green-500 hover:text-green-600">
-                <CheckIcon className="h-5 w-5" />
-              </button>
-              <button 
-                onClick={() => setIsEditing(true)} 
-                className="text-blue-500 hover:text-blue-600"
-              >
-                <PencilIcon className="h-5 w-5" />
-              </button>
-              <button 
-                onClick={() => onDelete(task._id)} 
-                className="text-red-500 hover:text-red-600"
-              >
-                <TrashIcon className="h-5 w-5" />
-              </button>
+            <div className="flex items-center">
+              {/* Right side display based on sort selection - just the value without a label */}
+              <div className="mr-4 text-sm font-medium text-red-500">
+                {statusDisplay}
+              </div>
+              <div className="flex space-x-2">
+                <button onClick={togglePin} className="text-yellow-500 hover:text-yellow-600">
+                  {task.pinned ? (
+                    <PinSolidIcon className="w-5 h-5" />
+                  ) : (
+                    <PinOutlineIcon className="w-5 h-5" />
+                  )}
+                </button>
+                <button onClick={toggleStatus} className="text-green-500 hover:text-green-600">
+                  <CheckIcon className="w-5 h-5" />
+                </button>
+                <button 
+                  onClick={() => setIsEditing(true)} 
+                  className="text-blue-500 hover:text-blue-600"
+                >
+                  <PencilIcon className="w-5 h-5" />
+                </button>
+                <button 
+                  onClick={() => onDelete(task._id)} 
+                  className="text-red-500 hover:text-red-600"
+                >
+                  <TrashIcon className="w-5 h-5" />
+                </button>
+              </div>
             </div>
-          </div>
-          <div className="mt-2 text-sm text-gray-400">
-            {new Date(task.date).toLocaleString()}
           </div>
         </div>
       )}
@@ -111,19 +128,43 @@ const TaskItem = ({ task, onUpdate, onDelete }) => {
   );
 };
 
-const TaskList = ({ tasks, onUpdate, onDelete }) => {
+const TaskList = ({ tasks, onUpdate, onDelete, sortBy, onSortChange }) => {
   if (tasks.length === 0) {
-    return <div className="text-center py-8 text-gray-500">No tasks yet. Add one to get started!</div>;
+    return <div className="py-8 text-center text-gray-500">No tasks yet. Add one to get started!</div>;
   }
 
   return (
     <div>
+      <div className="flex items-center mb-4">
+        <span className="mr-2 font-medium">Sort by:</span>
+        <div className="flex space-x-2">
+          <button 
+            onClick={() => onSortChange('date')} 
+            className={`px-3 py-1 rounded ${sortBy === 'date' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+          >
+            Date
+          </button>
+          <button 
+            onClick={() => onSortChange('title')} 
+            className={`px-3 py-1 rounded ${sortBy === 'title' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+          >
+            Title
+          </button>
+          <button 
+            onClick={() => onSortChange('status')} 
+            className={`px-3 py-1 rounded ${sortBy === 'status' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+          >
+            Status
+          </button>
+        </div>
+      </div>
       {tasks.map(task => (
         <TaskItem 
           key={task._id} 
           task={task} 
           onUpdate={onUpdate} 
-          onDelete={onDelete} 
+          onDelete={onDelete}
+          sortBy={sortBy}
         />
       ))}
     </div>

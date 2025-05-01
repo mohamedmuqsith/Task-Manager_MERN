@@ -49,12 +49,21 @@ const Dashboard = () => {
     }
   };
 
+  // Sort tasks based on the selected sort criteria
   const sortedTasks = [...tasks].sort((a, b) => {
+    // Sort by pinned status first (pinned items always come first)
+    if (a.pinned !== b.pinned) {
+      return a.pinned ? -1 : 1;
+    }
+    
+    // Then apply the selected sort criteria
     if (sortBy === 'title') {
       return a.title.localeCompare(b.title);
     } else if (sortBy === 'status') {
+      // Completed tasks come last
       return a.status === b.status ? 0 : a.status ? 1 : -1;
     } else {
+      // Default: sort by date (newest first)
       return new Date(b.date) - new Date(a.date);
     }
   });
@@ -67,22 +76,12 @@ const Dashboard = () => {
     <div>
       <h1 className="mb-6 text-3xl font-bold">Your Tasks</h1>
       <TaskForm onAdd={addTask} />
-      <div className="mb-4">
-        <label className="mr-2">Sort by:</label>
-        <select
-          value={sortBy}
-          onChange={(e) => setSortBy(e.target.value)}
-          className="p-1 border rounded"
-        >
-          <option value="date">Date</option>
-          <option value="title">Title</option>
-          <option value="status">Status</option>
-        </select>
-      </div>
       <TaskList 
         tasks={sortedTasks} 
         onUpdate={updateTask} 
-        onDelete={deleteTask} 
+        onDelete={deleteTask}
+        sortBy={sortBy}
+        onSortChange={setSortBy}
       />
     </div>
   );

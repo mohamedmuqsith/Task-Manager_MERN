@@ -19,12 +19,12 @@ const Login = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
-      {error && <div className="mb-4 p-2 bg-red-100 text-red-700 rounded">{error}</div>}
+    <div className="max-w-md p-6 mx-auto mt-10 bg-white rounded-lg shadow-md">
+      <h2 className="mb-6 text-2xl font-bold text-center">Login</h2>
+      {error && <div className="p-2 mb-4 text-red-700 bg-red-100 rounded">{error}</div>}
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label className="block text-gray-700 mb-2" htmlFor="email">
+          <label className="block mb-2 text-gray-700" htmlFor="email">
             Email
           </label>
           <input
@@ -37,7 +37,7 @@ const Login = () => {
           />
         </div>
         <div className="mb-6">
-          <label className="block text-gray-700 mb-2" htmlFor="password">
+          <label className="block mb-2 text-gray-700" htmlFor="password">
             Password
           </label>
           <input
@@ -51,7 +51,7 @@ const Login = () => {
         </div>
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition"
+          className="w-full px-4 py-2 text-white transition bg-blue-600 rounded-lg hover:bg-blue-700"
         >
           Login
         </button>

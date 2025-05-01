@@ -60,19 +60,19 @@ const Dashboard = () => {
   });
 
   if (loading) {
-    return <div className="text-center py-8">Loading...</div>;
+    return <div className="py-8 text-center">Loading...</div>;
   }
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-6">Your Tasks</h1>
+      <h1 className="mb-6 text-3xl font-bold">Your Tasks</h1>
       <TaskForm onAdd={addTask} />
       <div className="mb-4">
         <label className="mr-2">Sort by:</label>
         <select
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value)}
-          className="border rounded p-1"
+          className="p-1 border rounded"
         >
           <option value="date">Date</option>
           <option value="title">Title</option>

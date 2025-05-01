@@ -14,9 +14,9 @@ const TaskForm = ({ onAdd }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mb-8 p-4 bg-gray-50 rounded-lg">
+    <form onSubmit={handleSubmit} className="p-4 mb-8 rounded-lg bg-gray-50">
       <div className="mb-4">
-        <label className="block text-gray-700 mb-2">Title</label>
+        <label className="block mb-2 text-gray-700">Title</label>
         <input
           type="text"
           value={title}
@@ -27,7 +27,7 @@ const TaskForm = ({ onAdd }) => {
         />
       </div>
       <div className="mb-4">
-        <label className="block text-gray-700 mb-2">Description (optional)</label>
+        <label className="block mb-2 text-gray-700">Description (optional)</label>
         <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
@@ -38,9 +38,9 @@ const TaskForm = ({ onAdd }) => {
       </div>
       <button
         type="submit"
-        className="flex items-center justify-center bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition"
+        className="flex items-center justify-center px-4 py-2 text-white transition bg-blue-600 rounded-lg hover:bg-blue-700"
       >
-        <PlusCircleIcon className="h-5 w-5 mr-2" />
+        <PlusCircleIcon className="w-5 h-5 mr-2" />
         Add Task
       </button>
     </form>

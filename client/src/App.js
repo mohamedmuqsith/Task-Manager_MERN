@@ -10,7 +10,7 @@ function App() {
   return (
     <Router>
       <Navbar />
-      <div className="container mx-auto px-4 py-8">
+      <div className="container px-4 py-8 mx-auto">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
